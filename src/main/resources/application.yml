@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://arquitetura-cloud.database.windows.net:1433;database=take-a-guide-db;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: matrix.dba@arquitetura-cloud
+    password: ""
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  application:
+    name: take-a-guide
+springdoc:
+  swagger-ui:
+    path: "/api-docs"
+server:
+  port: 8081
