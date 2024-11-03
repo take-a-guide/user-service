@@ -38,7 +38,7 @@ public class UserRepository {
                 name,
                 email,
                 password,
-                user_type_id,
+                type,
                 phone,
                 deleted_at
             FROM 
@@ -111,7 +111,7 @@ public class UserRepository {
                 name,
                 email,
                 password,
-                user_type_id,
+                type,
                 phone,
                 deleted_at
             FROM
@@ -137,7 +137,7 @@ public class UserRepository {
                 name,
                 email,
                 password,
-                user_type_id,
+                type,
                 phone,
                 deleted_at
             FROM
@@ -163,7 +163,7 @@ public class UserRepository {
                 name,
                 email,
                 password,
-                user_type_id,
+                type,
                 phone,
                 deleted_at
             FROM
@@ -208,7 +208,7 @@ public class UserRepository {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
         String sql = String.format("""
-            INSERT INTO account(cpf, name, email, password, user_type_id, phone)
+            INSERT INTO account(cpf, name, email, password, type, phone)
             VALUES('%s', '%s', '%s', '%s', :type, '%s');
         """, request.cpf(), request.name(), request.email(), request.password(), request.phone());
 

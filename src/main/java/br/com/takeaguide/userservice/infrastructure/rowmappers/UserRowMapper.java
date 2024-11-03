@@ -16,11 +16,11 @@ public class UserRowMapper implements RowMapper<User> {
         String name = rs.getString("name");
         String email = rs.getString("email");
         String password = rs.getString("password");
-        int userTypeId = rs.getInt("user_type_id");
+        int type = rs.getInt("type");
         String phone = rs.getString("phone");
         Timestamp deletedAtTimestamp = rs.getTimestamp("deleted_at");
         LocalDateTime deletedAt = (deletedAtTimestamp != null) ? deletedAtTimestamp.toLocalDateTime() : null;
 
-        return new User(cpf, name, email, password, phone, userTypeId, deletedAt);
+        return new User(cpf, name, email, password, phone, type, deletedAt);
     }
 }

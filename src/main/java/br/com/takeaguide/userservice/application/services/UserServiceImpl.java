@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         UserDto userDto = new UserDto(
             user.getCpf(), user.getName(), user.getEmail(), user.getPassword(),
-            user.getUserTypeId(), user.getPhone(), user.getDeletedAt()
+            user.getType(), user.getPhone(), user.getDeletedAt()
         );
 
         return ResponseUtils.formatResponse(
@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         List<UserDto> userDtos = users.stream()
             .map(user -> new UserDto(
                 user.getCpf(), user.getName(), user.getEmail(), user.getPassword(),
-                user.getUserTypeId(), user.getPhone(), user.getDeletedAt()
+                user.getType(), user.getPhone(), user.getDeletedAt()
             ))
             .collect(Collectors.toList());
 
