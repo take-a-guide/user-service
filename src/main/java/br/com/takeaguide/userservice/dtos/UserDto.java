@@ -37,10 +37,10 @@ public record UserDto(
     @JsonProperty("password") String password,
 
     @Schema(
-        name = "user_type_id",
+        name = "type",
         description = "User type (1: Hirer, 2: Guide, 3: Admin)"
     )
-    @JsonProperty("user_type_id") int userTypeId,
+    @JsonProperty("type") int type,
 
     @Schema(
         name = "phone",

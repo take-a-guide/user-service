@@ -10,7 +10,7 @@ public class User {
     private String email;
     private String password;
     private String phone;
-    private int userTypeId;
+    private int type;
     private LocalDateTime deletedAt;
     
 
@@ -18,13 +18,13 @@ public class User {
     public User() {}
 
 
-    public User(String cpf, String name, String email, String password, String phone, int userTypeId, LocalDateTime deletedAt) {
+    public User(String cpf, String name, String email, String password, String phone, int type, LocalDateTime deletedAt) {
         this.cpf = cpf;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.userTypeId = userTypeId;
+        this.type = type;
         this.deletedAt = deletedAt;
     }
 
@@ -69,12 +69,12 @@ public class User {
         this.phone = phone;
     }
 
-    public int getUserTypeId() {
-        return userTypeId;
+    public int getType() {
+        return type;
     }
 
-    public void setUserTypeId(int userTypeId) {
-        this.userTypeId = userTypeId;
+    public void settype(int type) {
+        this.type = type;
     }
 
     public LocalDateTime getDeletedAt() {
