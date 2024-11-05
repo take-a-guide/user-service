@@ -16,5 +16,6 @@ server:
 
 azure:
   servicebus:
-    namespace: ${ServiceBusConnectionString}
-    queue-name: ${QueueName}
+    namespace: takeaguide
+    ServiceBusConnectionString: ${ServiceBusConnectionString}
+    QueueName: ${QueueName}
