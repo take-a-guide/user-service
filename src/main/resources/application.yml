@@ -6,8 +6,15 @@ spring:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   application:
     name: take-a-guide
+
 springdoc:
   swagger-ui:
     path: "/api-docs"
+
 server:
   port: 8081
+
+azure:
+  servicebus:
+    namespace: ${ServiceBusConnectionString}
+    queue-name: ${QueueName}

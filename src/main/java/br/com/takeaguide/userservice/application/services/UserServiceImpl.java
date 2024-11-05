@@ -1,6 +1,5 @@
 package br.com.takeaguide.userservice.application.services;
 
-
 import br.com.takeaguide.userservice.utils.ResponseUtils;
 import br.com.takeaguide.userservice.domain.entities.User;
 import br.com.takeaguide.userservice.domain.repositories.UserRepository;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,22 +19,22 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final MessageService messageService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, MessageService messageService) {
         this.userRepository = userRepository;
+        this.messageService = messageService;
     }
 
     @Override
     public ResponseEntity<ResponseObject> login(LoginRequest request) {
-
         ResponseEntity<ResponseObject> validationResponse = request.validate();
-            if (validationResponse != null) {
+        if (validationResponse != null) {
             return validationResponse; 
         }
 
         User user = userRepository.login(request.email(), request.password());
-
         if (user == null) {
             return ResponseUtils.formatResponse(
                 HttpStatus.FORBIDDEN,
@@ -57,14 +55,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ResponseObject> createUser(CreateUserRequest request) {
-    
         ResponseEntity<ResponseObject> validationResponse = request.validate();
-            if (validationResponse != null) {
+        if (validationResponse != null) {
             return validationResponse; 
         }
 
         int existingUsers = userRepository.checkIfUserIsAllowed(request.email(), request.name());
-
         if (existingUsers > 0) {
             return ResponseUtils.formatResponse(
                 HttpStatus.CONFLICT,
@@ -74,6 +70,9 @@ public class UserServiceImpl implements UserService {
 
         String cpf = userRepository.insertUser(request);
 
+        // Sends message to Service Bus
+        messageService.sendMessage("New user created: " + request.email());
+
         return ResponseUtils.formatResponse(
             HttpStatus.CREATED,
             new CreateUserResponse(cpf, "User created successfully")
@@ -82,20 +81,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ResponseObject> changeUser(ChangeUserRequest request) {
-
         ResponseEntity<ResponseObject> validationResponse = request.validate();
-            if (validationResponse != null) {
+        if (validationResponse != null) {
             return validationResponse; 
         }
 
         boolean isUserExistent = userRepository.updateUser(request);
-
         if (!isUserExistent) {
             return ResponseUtils.formatResponse(
                 HttpStatus.NOT_FOUND,
                 ResponseObject.builder().error("User not found").build()
             );
         }
+
+        // Enviar mensagem ao Service Bus
+        messageService.sendMessage("User updated: " + request.cpf());
 
         return ResponseUtils.formatResponse(
             HttpStatus.OK,
@@ -105,16 +105,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ResponseObject> removeUser(DeleteUserRequest request) {
-
-        
         boolean removed = userRepository.removeUser(request.cpf());
-
         if (!removed) {
             return ResponseUtils.formatResponse(
                 HttpStatus.NOT_FOUND,
                 ResponseObject.builder().error("User not found").build()
             );
         }
+
+        // Enviar mensagem ao Service Bus
+        messageService.sendMessage("User removed: " + request.cpf());
 
         return ResponseUtils.formatResponse(
             HttpStatus.OK,
@@ -153,6 +153,4 @@ public class UserServiceImpl implements UserService {
             new RetrieveUsersResponse(userDtos, "Users found")
         );
     }
-
-   
 }
