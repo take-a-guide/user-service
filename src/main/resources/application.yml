@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://arquitetura-cloud.database.windows.net:1433;database=take-a-guide-db;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
-    username: matrix.dba@arquitetura-cloud
-    password: "Jefvacilao!"
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   application:
     name: take-a-guide
@@ -16,6 +16,7 @@ server:
 
 azure:
   servicebus:
-    namespace: takeaguide
-    ServiceBusConnectionString: ${ServiceBusConnectionString}
-    QueueName: ${QueueName}
+    namespace: ${AZURE_SERVICEBUS_NAMESPACE}
+    connection-string: ${AZURE_SERVICEBUS_CONNECTION_STRING}
+    queue-name: ${AZURE_SERVICEBUS_QUEUE_NAME}
+    QueueName: ${AZURE_SERVICEBUS_QUEUE_NAME}
